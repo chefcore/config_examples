@@ -56,13 +56,11 @@ Do all of the following from a chef workstation that has admin permissions to th
     1. [Vagrant Download](https://www.vagrantup.com/downloads.html)
 3. Install Chef Development Kit
     1. [ChefDK Download](https://downloads.chef.io/chef-dk/)
-4. Install kitchen-ec2 gem to ChefDK (Optional if using EC2)
-    1. ```chef gem install kitchen-ec2```
-5. Download This Project
+4. Download This Project
     1. Create repo directory
         1. ```mkdir -p ~/Development/chef/cookbooks/```
     1. ```git clone https://github.com/chefcore/config_examples.git ~/Development/chef/cookbooks/```
-6. Create **.kitchen.local.yml** file and add proxy settings
+5. **(Optional)** Create **.kitchen.local.yml** file and add proxy or other custom settings like resources.
 
 ### Windows Specific
 
