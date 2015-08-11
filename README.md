@@ -3,7 +3,7 @@
 Ultimate Chef all inclusive wrapper infrastructure.  Provides a great infrastructure foundation starting point. Provides wrappers for many common services. Aided an eliminating the need for writing dozens of wrapper cookbooks.
 
 # Design
-The design idea came to me one day after a couple years of repeatably writing wrapper cookbooks for several different developement teams. I found the layout that was given to use was an inferior design that had numerous faults.
+The design idea came to me one day after a couple years of repeatably writing wrapper cookbooks for several different development teams. I found the layout that was given to use was an inferior design that had numerous faults.
 
 So, I decided to make a project that directly addressed these issues aims at simplifying stack setup and management.
 
@@ -11,29 +11,11 @@ I hope to help others by giving a Chef foundation that is solid, extensible and 
 
 I'm a long way from being finished. I hope that others will help me grow the project and continually improve it.
 
-The idea is to not have to write tons of wrapper cookbooks, work with all major flavors of operating systems and to setup a stack for a developement team is as simple as filling out a few JSON "configuration" files (Environment and Data Bags).
+The idea is to not have to write tons of wrapper cookbooks, work with all major flavors of operating systems and to setup a stack for a development team is as simple as filling out a few JSON "configuration" files (Environment and Data Bags).
 
 # Supported Platforms
 * Linux
-* Windows
-
-# Setup DevOps Workstation
-Do all of the following from a chef workstation that has admin permissions to the Chef Server.
-
-1. Install Chef Development Kit
-    1. [Download](https://downloads.chef.io/chef-dk/)
-2. Download This Project
-    1. ```git clone https://github.com/LevonBecker/chef_core.git ~/chef_core```
-
-# Upload to Chef Server
-After you are happy with all the pieces and made any adjustments needed you can upload to your Chef Server.
-
-1. Upload Cookbooks
-    1. ```berks upload```
-2. Upload Chef Core roles to Chef Server
-    1. Change directories to roles
-    2. ```ls *.json | xargs -n1 knife role from file```
-3. Create and upload your own Environment files using the core examples in the environments directory.
+* Windows (WIP)
 
 # Structure
 
@@ -53,97 +35,93 @@ Roles specify the generic service of the system. This is where the run list is s
 | version_control  | Subversion, Git, Gitlab |
 | web  | Apache, Nginx, Unicorn, Tomcat, IIS |
 
-## Environments
-Specific configurations per environment are set here.
+## Environments, Roles and Data Bags
+Use the examples provided to model your custom configurations.
 
-### Example
-
-```java
-{
-    "name": "bonusbits_web_dev",
-    "description": "Bonus Bits Dev Web Environment",
-    "cookbook_versions": {},
-    "json_class": "Chef::Environment",
-    "chef_type": "environment",
-    "default_attributes": {
-    },
-    "override_attributes": {
-    }
-}
-```
-
-## Data Bags
-Secure and non-secure data for a solution.
-
-### Example
-```java
-{
-    "name": "bonusbits_web_dev",
-    "description": "Bonus Bits Dev Web Environment",
-    "cookbook_versions": {},
-    "json_class": "Chef::Environment",
-    "chef_type": "environment",
-    "default_attributes": {
-    },
-    "override_attributes": {
-    }
-}
-```
 
 # TESTING (Kitchen)
 
-# Supported Host Platforms
+## Supported Host Platforms
 * Linux
 * Windows
 * Mac
 
-# Test Setup
+## Setup DevOps Workstation
+Do all of the following from a chef workstation that has admin permissions to the Chef Server.
+
 1. Install latest Virtualbox
-    1. [Download](https://www.virtualbox.org/wiki/Downloads)
+    1. [Virtualbox Download](https://www.virtualbox.org/wiki/Downloads)
+    2. Enable VT in BIOS
 2. Install latest Vagrant
-    1. [Download](https://www.vagrantup.com/downloads.html)
+    1. [Vagrant Download](https://www.vagrantup.com/downloads.html)
 3. Install Chef Development Kit
-    1. [Download](https://downloads.chef.io/chef-dk/)
+    1. [ChefDK Download](https://downloads.chef.io/chef-dk/)
 4. Install kitchen-ec2 gem to ChefDK (Optional if using EC2)
     1. ```chef gem install kitchen-ec2```
 5. Download This Project
-    1. ```git clone https://github.com/LevonBecker/chef_core.git ~/chef_core```
+    1. Create repo directory
+        1. ```mkdir -p ~/Development/chef/cookbooks/```
+    1. ```git clone https://github.com/chefcore/config_examples.git ~/Development/chef/cookbooks/```
+6. Create **.kitchen.local.yml** file and add proxy settings
 
-## Vagrant Local VM (Option 1)
-This is the default setup and doesn't require an special setup.
+### Windows Specific
 
-## AWS EC2 Instance (Option 2)
-Edit the .kitchen-ec2.yml and add your unique Amazon settings
+***PowerShell Setup***
 
-1. Select a CentOS 6.5 AMI in your account or set one up based on Public AMI (Create Either pick your own CenOS 6.5 AMI or accept terms for one I used
-    1. [http://aws.amazon.com/marketplace/pp?sku=eggbgx9svw4xhzs1omttdv29q](http://aws.amazon.com/marketplace/pp?sku=eggbgx9svw4xhzs1omttdv29q)
-    2. [http://wiki.centos.org/Cloud/AWS](http://wiki.centos.org/Cloud/AWS)
-    3. Be sure your ssh key pair is setup for the AMI
-    4. Create [ec2-user](https://awsmp-usageinstructions.s3.amazonaws.com/CentOS_User_Add_Instructions.pdf) etc.
-2. Include appropriate security group/s that allow SSH from your computer WAN address and HTTP from anywhere
+[ChefDK on Windows](https://www.chef.io/blog/2014/11/04/the-chefdk-on-windows-survival-guide/)
 
-Note: The .kitchen.local.yml file overrides the .kitchen.yml file so you can leave .kitchen.yml as is and write your own as .kitchen.local.yml without dorking up the git status.
+1. Create **C:\Dev** Folder (Shortens path as a workaround to 260 character limitation)
+    1. ```mkdir C:\Dev```
+2. Create **C:\Dev\github** Folder
+    1. ```mkdir C:\Dev\chef```
+3. Create **C:\Dev\github\ATM** Folder
+    1. ```mkdir C:\Dev\chef\cookbooks```
+4. Install git client
+    1. [Git Client Download](https://git-scm.com/download/win)
+    2. Select to allow it to run from dos prompt
+5. Download This Project
+    1. ```git clone https://github.com/bonusbits/bonusbits_linux_base.git C:\Dev\chef\cookbooks```
+6. Set User Profile Environment Variables ***Some of these settings deals with Home folders on Shares***
+    1. ```HTTP_PROXY=http://username:password@proxy.domain.com:8000```
+    2. ```HTTPS_PROXY=https://username:password@proxy.domain.com:8000```
+    3. ```CHEFDK_PATH=C:\Dev\.chefdk```
+    4. ```PATH=%PATH%;C:\Dev\.chefdk\gem\ruby\2.1.0\bin;C:\opscode\chefdk\embedded\bin"```
+    5. ```VBOX_USER_HOME=C:\Dev\.VirtualBox```
+    6. ```VAGRANT_HOME=C:\Dev\.vagrant.d```
+    7. ```BERKSHELF_PATH=C:\Dev\.berkshelf```
+    8. ```GEM_ROOT=C:\opscode\chefdk\embedded\lib\ruby\gems\2.1.0```
+    9. ```GEM_HOME=C:\Dev\.chefdk\gem\ruby\2.1.0```
+    10. ```GEM_PATH=C:\Dev\.chefdk\gem\ruby\2.1.0;C:\opscode\chefdk\embedded\lib\ruby\gem```
+7. Set PowerShell execution policy
+    1. ```Set-ExecutionPolicy unrestricted```
+8. Create WindowsPowerShell user directory
+    1. ```mkdir %USERPROFILE%\Documents\WindowsPowerShell```
+9. Added ChefDK init to PowerShell user profile
+    1. ```"chef shell-init powershell | Invoke-Expression" >> $PROFILE```
 
-# Create Linux VM Locally with Kitchen
-From a command shell in the project directory execute the following.
+## Vagrant Local VirtualBox VM
+First change to the root directory of config_examples in a shell.
 
-* Local Vagrant: ```kitchen converge core-web-apache-centos```
-* EC2 Instance: ```KITCHEN_YAML=.kitchen-ec2.yml kitchen converge core-web-apache-amazon```
+### List all Test Suites
+There are many OS flavors and more coming. So, first list whats available and pick which one you'd like to test out. 
+If you don't specify a test suite it will try to set them all up and most likely run your system out of storage, memory or both.
 
-# Run Integration Tests with Kitchen
-From a command shell in the project directory execute the following. (WIP)
+```kitchen list```
 
-* Local Vagrant: ```kitchen verify core-web-apache-centos```
-* EC2 Instance: ```KITCHEN_YAML=.kitchen-ec2.yml kitchen verify core-web-apache-amazon```
+### Create Local VM and Run Chef Client 
+***Also used to run Chef Client again after making local cookbook changes***
 
-# Delete VM
-From a command shell in the project directory execute the following.
+```kitchen core-base-el-centos-66 converge```
 
-* ```kitchen destroy```
+### Run Integration Tests with Kitchen
 
-# Troubleshooting
-* I found I needed to do a kitchen create, then wait for the instance to finish it's checks and then do a kitchen converge.
+```kitchen core-base-el-centos-66 verify```
+
+### Delete VM
+
+```kitchen core-base-el-centos-66 destroy```
 
 # Completed
 
-1. core_web::apache
+1. core_base
+2. core_web::apache
