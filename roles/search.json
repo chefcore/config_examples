@@ -1,0 +1,15 @@
+{
+    "name": "search",
+    "description": "solr, sphinx, elasticsearch",
+    "json_class": "Chef::Role",
+    "default_attributes": {},
+    "override_attributes": {
+    },
+    "chef_type": "role",
+    "run_list": [
+      "recipe[core_base]",
+      "recipe[core_search]"
+    ],
+    "env_run_lists": {
+    }
+}

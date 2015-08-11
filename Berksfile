@@ -1,0 +1,23 @@
+source 'https://supermarket.getchef.com'
+
+# cookbook 'core_library', git: 'https://github.com/chefcore/core_library.git'
+# cookbook 'core_monitoring', git: 'https://github.com/chefcore/core_monitoring.git'
+# cookbook 'core_security', git: 'https://github.com/chefcore/core_security.git'
+# cookbook 'core_users', git: 'https://github.com/chefcore/core_users.git'
+# cookbook 'core_base', git: 'https://github.com/chefcore/core_base.git'
+
+cookbook 'core_base', path: '../core_base'
+cookbook 'core_library', path: '../core_library'
+cookbook 'core_security', path: '../core_security'
+cookbook 'core_users', path: '../core_users'
+cookbook 'core_monitoring', path: '../core_monitoring'
+cookbook 'core_web', path: '../core_web'
+
+# cookbook 'core_app', path: '../core_app'
+# cookbook 'core_ci', path: '../core_ci'
+# cookbook 'core_database', path: '../core_database'
+# cookbook 'core_logs', path: '../core_logs'
+# cookbook 'core_media', path: '../core_media'
+# cookbook 'core_provision', path: '../core_provision'
+# cookbook 'core_search', path: '../core_search'
+# cookbook 'core_version_control', path: '../core_version_control'

@@ -1,0 +1,15 @@
+{
+    "name": "app",
+    "description": "Mediawiki, Wordpress, Teamspeak, WAR deploy, etc.",
+    "json_class": "Chef::Role",
+    "default_attributes": {},
+    "override_attributes": {
+    },
+    "chef_type": "role",
+    "run_list": [
+      "recipe[core_base]",
+      "recipe[core_app]"
+    ],
+    "env_run_lists": {
+    }
+}

@@ -1,0 +1,9 @@
+metadata.json
+Gemfile.lock
+Berksfile.lock
+.kitchen/
+.kitchen.local.yml
+.vagrant
+.idea
+.chef
+berks-cookbooks

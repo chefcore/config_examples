@@ -1,0 +1,92 @@
+---
+driver:
+  name: vagrant
+  customize:
+    memory: 512
+    cpus: 1
+
+provisioner:
+  name: chef_zero
+#  require_chef_omnibus: 12.3.0
+#  http_proxy: http://username:password@proxy.domain.com:8000
+#  https_proxy: https://username:password@proxy.domain.com:8000
+#  no_proxy: 'localhost,127.0.0.1,.localdomain.com'
+
+platforms:
+  - name: centos-6.6
+  - name: centos-7.0
+  - name: debian-7.7
+  - name: fedora-21
+  - name: freebsd-10.1
+  - name: ubuntu-14.04
+  - name: windows-2008r2
+  - name: windows-2012r2
+
+suites:
+  - name: core_base_el
+    driver:
+      network:
+        - ["private_network", {ip: "33.33.33.20"}]
+    data_bags_path: "data_bags"
+    roles_path: "roles"
+    environments_path: "environments"
+    environment: "core_base"
+    encrypted_data_bag_secret_key_path: "data_bags/encrypted_data_bag_secret"
+    run_list:
+      - role[base]
+    attributes: {}
+    includes: ['centos-6.6', 'centos-7.0']
+  - name: core_web_apache_el
+    driver:
+      network:
+        - ["private_network", {ip: "33.33.33.21"}]
+    data_bags_path: "data_bags"
+    roles_path: "roles"
+    environments_path: "environments"
+    environment: "core_apache"
+    run_list:
+      - role[web]
+    attributes:
+      core_web:
+        web_server: apache
+    includes: ['centos-6.6', 'centos-7.0']
+#  - name: core_web_nginx_el
+#    driver:
+#      network:
+#        - ["private_network", {ip: "33.33.33.22"}]
+#    data_bags_path: "data_bags"
+#    run_list:
+#      - role[web]
+#    attributes:
+#      core_web:
+#        web_server: nginx
+#    includes: ['centos-6.6', 'centos-7.0']
+#  - name: core_web_tomcat_el
+#    driver:
+#      network:
+#        - ["private_network", {ip: "33.33.33.23"}]
+#    data_bags_path: "data_bags"
+#    run_list:
+#      - role[web]
+#    attributes:
+#      core_web:
+#        web_server: tomcat
+#    includes: ['centos-6.6', 'centos-7.0']
+#  - name: core_app_mediawiki_el
+#    driver:
+#      network:
+#        - ["private_network", {ip: "33.33.33.24"}]
+#    run_list:
+#      - role[app]
+#    attributes:
+#      core_app:
+#        web_app: mediawiki
+#  - name: core_app_rails_el
+#    driver:
+#      network:
+#        - ["private_network", {ip: "33.33.33.25"}]
+#    run_list:
+#      - role[app]
+#    attributes:
+#      core_app:
+#        web_app: rails
