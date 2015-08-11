@@ -47,7 +47,7 @@ Use the examples provided to model your custom configurations.
 * Mac
 
 ## Setup DevOps Workstation
-Do all of the following from a chef workstation that has admin permissions to the Chef Server.
+More in-depth instructions can be found [HERE](http://www.bonusbits.com/wiki/Reference:DevOps_Workstation_Setup_Check_List)
 
 1. Install latest Virtualbox
     1. [Virtualbox Download](https://www.virtualbox.org/wiki/Downloads)
@@ -72,7 +72,7 @@ Do all of the following from a chef workstation that has admin permissions to th
     1. ```mkdir C:\Dev```
 2. Create **C:\Dev\github** Folder
     1. ```mkdir C:\Dev\chef```
-3. Create **C:\Dev\github\ATM** Folder
+3. Create **C:\Dev\github\chefcore** Folder
     1. ```mkdir C:\Dev\chef\cookbooks```
 4. Install git client
     1. [Git Client Download](https://git-scm.com/download/win)
