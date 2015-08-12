@@ -1,3 +1,5 @@
+# Chef Core Example Configurations and Test Suites 
+
 # Purpose
 
 Ultimate Chef all inclusive wrapper infrastructure.  Provides a great infrastructure foundation starting point. Provides wrappers for many common services. Aided an eliminating the need for writing dozens of wrapper cookbooks.
