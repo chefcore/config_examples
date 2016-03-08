@@ -1,0 +1,4 @@
+{
+  "id": "settings",
+  "settings": "##########################################\n# BEGIN CUSTOM SETTINGS\n##########################################\n\n## General Configuration Settings\n# https://www.mediawiki.org/wiki/Manual:Configuration_settings\n$wgUniversalEditButton = true;\n\n## External Link Target Setting\n# http://www.mediawiki.org/wiki/Manual:Opening_external_links_in_a_new_window\n# So external web links open in new page instead of self\n$wgExternalLinkTarget = '_blank';\n\n## Enable UNC Links\n# http://www.mediawiki.org/wiki/UNC_links\narray_push($wgUrlProtocols, \"file://\");\n\n##########################################\n# END CUSTOM SETTINGS\n##########################################"
+}

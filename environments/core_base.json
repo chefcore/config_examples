@@ -1,7 +1,10 @@
 {
     "name": "core_base",
     "description": "Core Example Environment",
-    "cookbook_versions": {},
+    "cookbook_versions": {
+      "apt": "~> 2.9.2",
+      "yum-epel": "~> 0.6.5"
+    },
     "json_class": "Chef::Environment",
     "chef_type": "environment",
     "default_attributes": {

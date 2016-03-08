@@ -2,7 +2,13 @@
 
 # Purpose
 
-Ultimate Chef all inclusive wrapper infrastructure.  Provides a great infrastructure foundation starting point. Provides wrappers for many common services. Aided an eliminating the need for writing dozens of wrapper cookbooks.
+The focus of this project is to have a canned solution for a solid infrastructure foundation using Chef and AWS.
+Browse the core_examples repo for example Chef environments, roles, data bags, CloudFormations templates and more.
+They are configured to use the Chef Core suite of cookbooks.
+It's a starting point to help jump into the Chef world fresh or refactor a better configuration infrastructure.
+The intent is to provide wrapper cookbooks for many common services that have overrides and providers to stand up your stack without having to make cookbook customizations.
+The goal of this project is aided at eliminating the need for writing dozens of wrapper cookbooks or repeating code.
+Most likely there may be the need to have some custom deployment cookbooks that piggyback the Chef Core suite, but it should drastically reduce the effort.
 
 # Design
 The design idea came to me one day after a couple years of repeatably writing wrapper cookbooks for several different development teams. I found the layout that was given to use was an inferior design that had numerous faults.
@@ -125,3 +131,16 @@ If you don't specify a test suite it will try to set them all up and most likely
 
 1. core_base
 2. core_web::apache
+
+## Resources
+
+### Setup DevOps Workstation
+
+* [Setup Mac DevOps Workstation](http://www.bonusbits.com/wiki/Reference:Mac_OS_DevOps_Workstation_Setup_Check_List)
+* [Setup Ubuntu DevOps Workstation](http://www.bonusbits.com/wiki/Reference:Ubuntu_DevOps_Workstation_Setup_Check_List)
+* [Setup Windows DevOps Workstation](http://www.bonusbits.com/wiki/Reference:Windows_DevOps_Workstation_Setup_Check_List)
+
+### Test Kitchen
+
+* [Setup Test Kitchen](https://www.bonusbits.com/wiki/HowTo:Setup_Test_Kitchen)
+* [Test Kitchen Usage](https://www.bonusbits.com/wiki/Reference:Test_Kitchen)

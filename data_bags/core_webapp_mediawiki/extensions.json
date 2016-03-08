@@ -1,0 +1,11 @@
+{
+  "id": "extensions",
+  "extensions": {
+    "list": {
+      "News": {
+        "download_url": "http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/News/",
+        "config": "##########################################\n# BEGIN NEWS CONFIG\n##########################################\n\n# http://www.mediawiki.org/wiki/Extension:News\nrequire_once( \"$IP/extensions/News/News.php\" );\n$wgRCMaxAge = 365 * 24 * 3600; //365 days\n\n##########################################\n# END NEWS CONFIG\n##########################################\n"
+      }
+    }
+  }
+}
