@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Chef Core VPC CloudFormation Template 20160308",
+  "Description": "Chef Core VPC CloudFormation Template 20160321",
   "Parameters": {
     "Environment": {
       "Default": "dev",
@@ -12,19 +12,10 @@
         "stg",
         "prd"
       ]
-    },
-    "Region": {
-      "Default": "us-west-2",
-      "Description": "Select Region",
-      "Type": "String",
-      "AllowedValues": [
-        "us-west-2",
-        "us-east-1"
-      ]
     }
   },
   "Mappings": {
-    "Subnets": {
+    "california": {
       "dev": {
         "VPC": "192.168.10.0/24",
         "PublicAZ1": "192.168.10.0/27",
@@ -61,7 +52,88 @@
         "PrivateAZ2": "192.168.13.128/27",
         "PrivateAZ3": "192.168.13.160/27"
       }
+    },
+    "oregon": {
+      "dev": {
+        "VPC": "192.168.100.0/24",
+        "PublicAZ1": "192.168.100.0/27",
+        "PublicAZ2": "192.168.100.32/27",
+        "PublicAZ3": "192.168.100.64/27",
+        "PrivateAZ1": "192.168.100.96/27",
+        "PrivateAZ2": "192.168.100.128/27",
+        "PrivateAZ3": "192.168.100.160/27"
+      },
+      "qa": {
+        "VPC": "192.168.110.0/24",
+        "PublicAZ1": "192.168.110.0/27",
+        "PublicAZ2": "192.168.110.32/27",
+        "PublicAZ3": "192.168.110.64/27",
+        "PrivateAZ1": "192.168.110.96/27",
+        "PrivateAZ2": "192.168.110.128/27",
+        "PrivateAZ3": "192.168.110.160/27"
+      },
+      "stg": {
+        "VPC": "192.168.120.0/24",
+        "PublicAZ1": "192.168.120.0/27",
+        "PublicAZ2": "192.168.120.32/27",
+        "PublicAZ3": "192.168.120.64/27",
+        "PrivateAZ1": "192.168.120.96/27",
+        "PrivateAZ2": "192.168.120.128/27",
+        "PrivateAZ3": "192.168.120.160/27"
+      },
+      "prd": {
+        "VPC": "192.168.130.0/24",
+        "PublicAZ1": "192.168.130.0/27",
+        "PublicAZ2": "192.168.130.32/27",
+        "PublicAZ3": "192.168.130.64/27",
+        "PrivateAZ1": "192.168.130.96/27",
+        "PrivateAZ2": "192.168.130.128/27",
+        "PrivateAZ3": "192.168.130.160/27"
+      }
+    },
+    "virginia": {
+      "dev": {
+        "VPC": "192.168.200.0/24",
+        "PublicAZ1": "192.168.200.0/27",
+        "PublicAZ2": "192.168.200.32/27",
+        "PublicAZ3": "192.168.200.64/27",
+        "PrivateAZ1": "192.168.200.96/27",
+        "PrivateAZ2": "192.168.200.128/27",
+        "PrivateAZ3": "192.168.200.160/27"
+      },
+      "qa": {
+        "VPC": "192.168.210.0/24",
+        "PublicAZ1": "192.168.210.0/27",
+        "PublicAZ2": "192.168.210.32/27",
+        "PublicAZ3": "192.168.210.64/27",
+        "PrivateAZ1": "192.168.210.96/27",
+        "PrivateAZ2": "192.168.210.128/27",
+        "PrivateAZ3": "192.168.210.160/27"
+      },
+      "stg": {
+        "VPC": "192.168.220.0/24",
+        "PublicAZ1": "192.168.220.0/27",
+        "PublicAZ2": "192.168.220.32/27",
+        "PublicAZ3": "192.168.220.64/27",
+        "PrivateAZ1": "192.168.220.96/27",
+        "PrivateAZ2": "192.168.220.128/27",
+        "PrivateAZ3": "192.168.220.160/27"
+      },
+      "prd": {
+        "VPC": "192.168.230.0/24",
+        "PublicAZ1": "192.168.230.0/27",
+        "PublicAZ2": "192.168.230.32/27",
+        "PublicAZ3": "192.168.230.64/27",
+        "PrivateAZ1": "192.168.230.96/27",
+        "PrivateAZ2": "192.168.230.128/27",
+        "PrivateAZ3": "192.168.230.160/27"
+      }
     }
+  },
+  "Conditions": {
+    "CaliforniaRegion": { "Fn::Equals": [ { "Ref": "AWS::Region" }, "us-west-1" ] },
+    "OregonRegion": { "Fn::Equals": [ { "Ref": "AWS::Region" }, "us-west-2" ] },
+    "VirginiaRegion": { "Fn::Equals": [ { "Ref": "AWS::Region" }, "us-east-1" ] }
   },
   "Resources": {
     "VPC": {
@@ -71,7 +143,7 @@
         "EnableDnsHostnames": "true",
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "VPC"
           ]
@@ -95,10 +167,10 @@
         "VpcId": {
           "Ref": "VPC"
         },
-        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "Region"}, "a"]]},
+        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "a"]]},
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "PublicAZ1"
           ]
@@ -118,10 +190,10 @@
         "VpcId": {
           "Ref": "VPC"
         },
-        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "Region"}, "b"]]},
+        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "b"]]},
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "PublicAZ2"
           ]
@@ -141,10 +213,10 @@
         "VpcId": {
           "Ref": "VPC"
         },
-        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "Region"}, "c"]]},
+        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "c"]]},
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "PublicAZ3"
           ]
@@ -276,10 +348,10 @@
         "VpcId": {
           "Ref": "VPC"
         },
-        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "Region"}, "a"]]},
+        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "a"]]},
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "PrivateAZ1"
           ]
@@ -299,10 +371,10 @@
         "VpcId": {
           "Ref": "VPC"
         },
-        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "Region"}, "b"]]},
+        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "b"]]},
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "PrivateAZ2"
           ]
@@ -322,10 +394,10 @@
         "VpcId": {
           "Ref": "VPC"
         },
-        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "Region"}, "c"]]},
+        "AvailabilityZone": {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "c"]]},
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "PrivateAZ3"
           ]
@@ -498,7 +570,7 @@
         "Egress": "false",
         "CidrBlock": {
           "Fn::FindInMap": [
-            "Subnets",
+            {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
             {"Ref": "Environment"},
             "VPC"
           ]
@@ -669,42 +741,6 @@
         }
       }
     },
-    "Internet2ELBSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "DependsOn": "VPC",
-      "Properties": {
-        "GroupDescription": "Internet to ELB Access",
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {"Fn::Join": ["", [{"Ref": "Environment"}, "-internet-to-elb"]]}
-          }
-        ],
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "80",
-            "ToPort": "80",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "443",
-            "ToPort": "443",
-            "CidrIp": "0.0.0.0/0"
-          }
-        ],
-        "SecurityGroupEgress": [
-          {
-            "IpProtocol": "-1",
-            "CidrIp": "0.0.0.0/0"
-          }
-        ]
-      }
-    },
     "NatSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "DependsOn": "VPC",
@@ -726,7 +762,7 @@
             "ToPort": "80",
             "CidrIp": {
               "Fn::FindInMap": [
-                "Subnets",
+                {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
                 {"Ref": "Environment"},
                 "PrivateAZ1"
               ]
@@ -738,7 +774,7 @@
             "ToPort": "443",
             "CidrIp": {
               "Fn::FindInMap": [
-                "Subnets",
+                {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
                 {"Ref": "Environment"},
                 "PrivateAZ1"
               ]
@@ -750,7 +786,7 @@
             "ToPort": "80",
             "CidrIp": {
               "Fn::FindInMap": [
-                "Subnets",
+                {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
                 {"Ref": "Environment"},
                 "PrivateAZ2"
               ]
@@ -762,7 +798,7 @@
             "ToPort": "443",
             "CidrIp": {
               "Fn::FindInMap": [
-                "Subnets",
+                {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
                 {"Ref": "Environment"},
                 "PrivateAZ2"
               ]
@@ -774,7 +810,7 @@
             "ToPort": "-1",
             "CidrIp": {
               "Fn::FindInMap": [
-                "Subnets",
+                {"Fn::If": ["CaliforniaRegion", "california", {"Fn::If": ["OregonRegion", "oregon", {"Fn::If": ["VirginiaRegion", "virginia", "unknown"]}]}]},
                 {"Ref": "Environment"},
                 "VPC"
               ]
@@ -832,68 +868,6 @@
         }
       }
     },
-    "ELBAccessSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "DependsOn": "VPC",
-      "Properties": {
-        "GroupDescription": "ELB to EC2 Instance",
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {"Fn::Join": ["", [{"Ref": "Environment"}, "-elb-to-instance"]]}
-          }
-        ]
-      }
-    },
-    "ELBSecurityGroupIngress": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "DependsOn": "ELBAccessSecurityGroup",
-      "Properties": {
-        "GroupId": {
-          "Ref": "ELBAccessSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "80",
-        "ToPort": "80",
-        "SourceSecurityGroupId": {
-          "Ref": "ELBAccessSecurityGroup"
-        }
-      }
-    },
-    "RDSAccessSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "DependsOn": "VPC",
-      "Properties": {
-        "GroupDescription": "RDS Access",
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {"Fn::Join": ["", [{"Ref": "Environment"}, "-rds-to-instance"]]}
-          }
-        ]
-      }
-    },
-    "RDSAccessSecurityGroupIngress": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "DependsOn": "RDSAccessSecurityGroup",
-      "Properties": {
-        "GroupId": {
-          "Ref": "RDSAccessSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "3306",
-        "ToPort": "3306",
-        "SourceSecurityGroupId": {
-          "Ref": "RDSAccessSecurityGroup"
-        }
-      }
-    },
     "NatGateway" : {
       "Type" : "AWS::EC2::NatGateway",
       "Properties" : {
@@ -935,18 +909,6 @@
         "Ref": "NatEIP"
       }
     },
-    "Internet2ELBSecurityGroup": {
-      "Description": "Internet to ELB Security Group ID",
-      "Value": {
-        "Ref": "Internet2ELBSecurityGroup"
-      }
-    },
-    "ELBAccessSecurityGroup": {
-      "Description": "ELB to EC2 Instance Access Security Group ID",
-      "Value": {
-        "Ref": "ELBAccessSecurityGroup"
-      }
-    },
     "NatSecurityGroup": {
       "Description": "NAT Security Group ID for Instances to have Internet Access",
       "Value": {
@@ -959,11 +921,13 @@
         "Ref": "InternalAccessSecurityGroup"
       }
     },
-    "RDSAccessSecurityGroup": {
-      "Description": "RDS to Instance Access Security Group ID",
-      "Value": {
-        "Ref": "RDSAccessSecurityGroup"
-      }
+    "PublicSubnets": {
+      "Description": "Public Subnets Created for VPC",
+      "Value": {"Fn::Join": ["", [{"Ref": "PublicSubnet1"}, ", ", {"Ref": "PublicSubnet2"}, ", ", {"Ref": "PublicSubnet3"}]]}
+    },
+    "PrivateSubnets": {
+      "Description": "Public Subnets Created for VPC",
+      "Value": {"Fn::Join": ["", [{"Ref": "PrivateSubnet1"}, ", ", {"Ref": "PrivateSubnet2"}, ", ", {"Ref": "PrivateSubnet3"}]]}
     }
   }
 }
