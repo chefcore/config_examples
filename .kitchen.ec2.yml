@@ -25,6 +25,7 @@ transport:
 
 provisioner:
   name: chef_zero
+
 platforms:
   - name: amzn2015091
     driver:
